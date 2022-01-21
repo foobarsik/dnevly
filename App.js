@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Text
+    Text,
+    Button
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import SwipeCards from "react-native-swipe-cards-deck";
@@ -27,6 +28,7 @@ function StatusCard({ text }) {
 }
 
 export default function App() {
+    let inputRef = useRef(null);
     const [cards, setCards] = useState();
 
     useEffect(() => {
@@ -57,20 +59,22 @@ export default function App() {
         <View style={styles.container}>
             {cards ? (
                 <SwipeCards
+                    ref={inputRef}
                     cards={cards}
-                    renderCard={(cardData) => <Card data={cardData}  />}
+                    renderCard={(cardData) => <Card data={cardData}/>}
                     keyExtractor={(cardData) => String(cardData.id)}
-                    renderNoMoreCards={() => <StatusCard text="No more cards..." />}
+                    renderNoMoreCards={() => <StatusCard text="No more cards..."/>}
                     actions={{
-                        nope: { onAction: handleNope },
-                        yup: { onAction: handleYup },
-                        maybe: { onAction: handleMaybe },
+                        nope: {onAction: handleNope},
+                        yup: {onAction: handleYup},
+                        maybe: {onAction: handleMaybe},
                     }}
                     hasMaybeAction={true}
                 />
             ) : (
                 <StatusCard text="Loading..." />
             )}
+            <Button onPress={() => inputRef.current._goToPrevCard()} title='Undo'/>
         </View>
     );
 }
