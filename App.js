@@ -4,16 +4,22 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Button
+    Button,
+    Dimensions
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import SwipeCards from "react-native-swipe-cards-deck";
 
 import {ContentService} from "./services/DatabaseService";
 
-function Card({ data }) {
+function Card({data}) {
     return (
-        <TouchableOpacity onPress={()=> Clipboard.setString(data.content)}  style={[styles.card, { backgroundColor: '#f5f5f5' }]}>
+        <TouchableOpacity
+            onPress={() => Clipboard.setString(data.content)}
+            style={[styles.card, {backgroundColor: '#f5f5f5'},
+                {width: Dimensions.get('window').width * .9},
+                {height: Dimensions.get('window').height * .8}
+            ]}>
             <Text selectable={true}>{data.content}</Text>
         </TouchableOpacity>
     );
@@ -90,9 +96,7 @@ const styles = StyleSheet.create({
     },
     card: {
         justifyContent: "center",
-        alignItems: "center",
-        width: 300,
-        height: 300,
+        alignItems: "center"
     },
     cardsText: {
         fontSize: 22,
