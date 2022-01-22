@@ -43,15 +43,17 @@ export default function App() {
     }, []);
 
     function handleYup(card) {
-        console.log(`Yup for ${card.id}`);
+        ContentService.update(card.id, {'is_validated': true})
         return true;
     }
+
     function handleNope(card) {
-        console.log(`Nope for ${card.id}`);
+        ContentService.update(card.id, {'is_archived': true, 'is_validated': true})
         return true;
     }
+
     function handleMaybe(card) {
-        console.log(`Maybe for ${card.id}`);
+        ContentService.update(card.id, {'is_bookmarked': true, 'is_validated': true})
         return true;
     }
 
