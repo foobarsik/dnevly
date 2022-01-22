@@ -25,7 +25,7 @@ function Card({data}) {
     );
 }
 
-function StatusCard({ text }) {
+function StatusCard({text}) {
     return (
         <View>
             <Text style={styles.cardsText}>{text}</Text>
@@ -39,14 +39,19 @@ export default function App() {
 
     useEffect(() => {
         ContentService.getAll()
-            .then(res => {
-                console.log(res[1]);
-                setCards(res);
-            })
+            .then(res => setCards(res))
             .catch(error => {
                 console.log('error')
             });
     }, []);
+
+    function getBookmarked() {
+        ContentService.getBookmarked()
+            .then(res => setCards(res))
+            .catch(error => {
+                console.log('error')
+            });
+    }
 
     function handleYup(card) {
         ContentService.update(card.id, {'is_validated': true})
@@ -80,9 +85,10 @@ export default function App() {
                     hasMaybeAction={true}
                 />
             ) : (
-                <StatusCard text="Loading..." />
+                <StatusCard text="Loading..."/>
             )}
             <Button onPress={() => inputRef.current._goToPrevCard()} title='Undo'/>
+            <Button onPress={getBookmarked} title='Bookmarked'/>
         </View>
     );
 }

@@ -10,14 +10,23 @@ class DatabaseService {
 
   // returns list of records as an array of javascript objects
   getAll = async () => {
-    const snapshot = await this.collection.get();
+    const snapshot = await this.collection.where("is_validated", "==", false).get();
+    return this._prepareData(snapshot);
+  };
+
+  getBookmarked = async () => {
+    const snapshot = await this.collection.where("is_bookmarked", "==", true).get();
+    return this._prepareData(snapshot);
+  }
+
+  _prepareData = async (snapshot) => {
     return snapshot.docs.map((doc) => {
       return {
         id: doc.id, // append document id to each document
         ...doc.data(),
       };
     });
-  };
+  }
 
   // returns a single document in object format
   getOne = async ({ queryKey }) => {
